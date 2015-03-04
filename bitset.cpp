@@ -180,7 +180,7 @@ PHP_FUNCTION(bitset_init)
     
     bitSetObj = new BitSet(bit_size);
     if(bitSetObj != NULL){
-        RETURN_BOOL(true);
+        RETURN_STRINGL((char *)bitSetObj->getBits(), bitSetObj->getBytes(), 0);
     }
     RETURN_BOOL(false);
 }

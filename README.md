@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/weedge/bitset.svg)](https://travis-ci.org/weedge/bitset)
+
 ####介绍
 将BitSet封装成类,用于php扩展调用
 

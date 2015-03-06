@@ -2,12 +2,7 @@
 
 BitSet::BitSet(unsigned int size)
 {
-    this->m_bytes = size%BYTE_SIZE>0 ? (size/BYTE_SIZE + 1) 
-        : (size/BYTE_SIZE); 
-    this->m_size = this->m_bytes*BYTE_SIZE; 
-    this->m_bits = (unsigned char*) malloc(this->m_bytes+1);
-    memset(this->m_bits,0,this->m_bytes+1);
-    this->m_bits[this->m_bytes] = '\0';
+    if(!this->init(size)) exit(-1);
 }
 
 BitSet::BitSet(const char* bits)
@@ -24,7 +19,6 @@ BitSet::BitSet(const char* bits)
             this->unSet(char_index);
         }
     }
-
 }
 
 bool BitSet::init(unsigned int size)
@@ -41,7 +35,7 @@ bool BitSet::init(unsigned int size)
 }
 
 bool BitSet::append(unsigned int pos){
-    if(pos<=this->m_size) return false;
+    if(pos<this->m_size) return false;
 
     int new_len = (this->m_bytes*2*BYTE_SIZE>pos) ? (this->m_bytes*2) : (pos/BYTE_SIZE+1);
     this->m_bits = (unsigned char*)realloc(this->m_bits,new_len+1);
@@ -55,7 +49,7 @@ bool BitSet::append(unsigned int pos){
 
 bool BitSet::set(unsigned int pos)
 {
-    if(pos>this->m_size){
+    if(pos>=this->m_size){
         this->append(pos);
     }
     int index = pos/BYTE_SIZE;
@@ -67,7 +61,7 @@ bool BitSet::set(unsigned int pos)
 
 bool BitSet::unSet(unsigned int pos)
 {
-    if(pos>this->m_size) return false;
+    if(pos>=this->m_size) return false;
     int index = pos/BYTE_SIZE;
     int bit_pos = pos%BYTE_SIZE;
     this->m_bits[index] &= ~(128U>>bit_pos);
@@ -75,9 +69,9 @@ bool BitSet::unSet(unsigned int pos)
     return true;
 }
 
-bool BitSet::isSet(unsigned int pos)
+bool BitSet::isSet(unsigned int pos) const
 {
-    if(pos>this->m_size) return false;
+    if(pos>=this->m_size) return false;
     int index = pos/BYTE_SIZE;
     int bit_pos = pos%BYTE_SIZE;
     if((this->m_bits[index] & (128U>>bit_pos))) return true; 
@@ -103,11 +97,25 @@ unsigned char* BitSet::andOp(BitSet* bits)
     //剩余的1字节处理
     for(int count=len-len%sizeof(unsigned long); count<len; count++)
     {
-        ((unsigned char*) opStr)[count] = 
+        ((unsigned char*)opStr)[count] = 
             ((unsigned char*)this->m_bits)[count] & ((unsigned char*)bits->getBits())[count];
     }
     
     return (unsigned char*)opStr;
+}
+
+BitSet BitSet::operator&(BitSet bits)
+{
+    BitSet res;
+
+    unsigned char* opStr = this->andOp(&bits);
+    unsigned int len = strlen((const char*)opStr);
+
+    res.setBits(opStr);
+    res.setBytes(len);
+    res.setSize(len*BYTE_SIZE);
+    
+    return res;
 }
 
 unsigned char* BitSet::orOp(BitSet* bits)
@@ -152,6 +160,13 @@ unsigned char* BitSet::orOp(BitSet* bits)
     return (unsigned char*)opStr;
 }
 
+BitSet BitSet::operator|(BitSet bits)
+{
+    BitSet res;
+    
+    return res;
+}
+
 unsigned char* BitSet::xorOp(BitSet* bits)
 {
     unsigned char* opStr;
@@ -188,6 +203,14 @@ unsigned char* BitSet::xorOp(BitSet* bits)
     return (unsigned char*)opStr;
 }
 
+BitSet BitSet::operator^(BitSet bits)
+{
+    BitSet res;
+    
+    
+    return res;
+}
+
 BitSet* BitSet::notOp()
 {
     //8字节
@@ -205,12 +228,19 @@ BitSet* BitSet::notOp()
     return this;
 }
 
+BitSet BitSet::operator~()
+{
+    BitSet res;
+    
+    
+    return res;
+}
+
 bool BitSet::reset()
 {
     if(this->m_bytes<=0) return false;
     
-    for(int i=0;i<this->m_bytes;i++)
-    {
+    for(int i=0;i<this->m_bytes;i++) {
         this->m_bits[i] &= 0;
     }
     
@@ -220,19 +250,33 @@ bool BitSet::reset()
 bool BitSet::fill()
 {
     if(this->m_bytes<=0) return false;
-    for(int i=0;i<this->m_bytes;i++)
-    {
-        this->m_bits[i] |= (128U-1);
+    for(int i=0;i<this->m_bytes;i++) {
+        this->m_bits[i] |= (256U-1);
     }
     return true;
 }
 
-void BitSet::print()
+void BitSet::print() const
 {
-    std::cout<<"this "<<this->m_bytes<<" bitset chars:"<<std::endl;
+    std::cout<<"this "<<this->m_bytes<<" bitset chars to unsigned int of byte_size:"<<std::endl;
     for(unsigned int i=0; i<this->m_bytes; i++) {
         std::cout<<(unsigned int)this->m_bits[i];
     }
 
     std::cout<<std::endl;
 }
+
+char* BitSet::toString() const
+{
+    char* str;
+    str = (char*) malloc(this->m_size+1);
+    memset(str,0,this->m_size+1);
+    str[this->m_size] = '\0';
+    for(int i=0; i<this->m_size; i++){
+        str[i] = (this->m_bits[i/BYTE_SIZE] & (128U>>(i%BYTE_SIZE))) ? '1' : '0';
+    }
+
+    return str;
+}
+
+

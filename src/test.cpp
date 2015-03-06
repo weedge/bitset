@@ -74,7 +74,6 @@ void test1()
 void test2()
 {
     std::cout<<"test operations: &, |, ^, ~"<<std::endl;
-    /*
     {
         BitSet* b1;
         BitSet* b2;
@@ -83,7 +82,17 @@ void test2()
         //test_case_bit_size = (unsigned int)pow(2,10);
 
         b1 = new BitSet(test_case_bit_size);
+		b1->set(7);
+		test_print(b1);
+		b1->reset();
+		test_print(b1);
+		b1->set(3);
+
         b2 = new BitSet(test_case_bit_size);
+		b2->fill();
+		test_print(b2);
+		b2->unSet(7);
+		test_print(b2);
 
         delete b1;
         b1 = NULL;
@@ -91,9 +100,7 @@ void test2()
         b2 = NULL;
 
     }
-    */
 
-    /*
     {
         std::cout<<"=====分割线 & ======="<<std::endl;
         BitSet b3("101010101001");
@@ -126,9 +133,7 @@ void test2()
         andOpBitSet.set(3);
         test_print(&andOpBitSet);
     }
-    */
 
-    /*
     {
         std::cout<<"=====分割线 | ======="<<std::endl;
         BitSet b3("101010101000");
@@ -144,9 +149,7 @@ void test2()
         opBitSet.unSet(3);
         test_print(&opBitSet);
     }
-    */
 
-    /*
     {
         std::cout<<"---分割线----"<<std::endl;
         BitSet b3("101010101000111100111");
@@ -162,8 +165,7 @@ void test2()
         opBitSet.unSet(3);
         test_print(&opBitSet);
     }
-    */
-    /*
+
     {
         std::cout<<"=====分割线 ^ ======="<<std::endl;
         BitSet b3("101010101000");
@@ -195,7 +197,6 @@ void test2()
         opBitSet.unSet(3);
         test_print(&opBitSet);
     }
-    */
 
     {
         std::cout<<"=====分割线 ~ ======="<<std::endl;
@@ -215,7 +216,7 @@ int main()
 {
     std::cout<<"test BitSet~!"<<std::endl;
 
-    //test1();
+    test1();
 
     test2();
 

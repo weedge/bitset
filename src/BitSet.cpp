@@ -104,7 +104,7 @@ unsigned char* BitSet::andOp(BitSet* bits)
     return (unsigned char*)opStr;
 }
 
-BitSet BitSet::operator&(BitSet bits)
+BitSet BitSet::operator&(BitSet &bits)
 {
     BitSet res;
 
@@ -134,12 +134,12 @@ unsigned char* BitSet::orOp(BitSet* bits)
         len = len1;
         op_len = len2;
         opStr = (unsigned char*) malloc(len+1);
-        memcpy(opStr+len,this->m_bits+len,len1-len2);
+        memcpy(opStr+op_len,this->m_bits+op_len,len1-len2);
     }else{
         len = len2;
         op_len = len1;
         opStr = (unsigned char*) malloc(len+1);
-        memcpy(opStr+len,bits->getBits()+len,len2-len1);
+        memcpy(opStr+op_len,bits->getBits()+op_len,len2-len1);
     }
     opStr[len] = '\0';
     
@@ -160,9 +160,16 @@ unsigned char* BitSet::orOp(BitSet* bits)
     return (unsigned char*)opStr;
 }
 
-BitSet BitSet::operator|(BitSet bits)
+BitSet BitSet::operator|(BitSet &bits)
 {
     BitSet res;
+
+    unsigned char* opStr = this->orOp(&bits);
+    int len = strlen((const char*)opStr);
+
+    res.setBits(opStr);
+    res.setBytes(len);
+    res.setSize(len*BYTE_SIZE);
     
     return res;
 }
@@ -203,35 +210,54 @@ unsigned char* BitSet::xorOp(BitSet* bits)
     return (unsigned char*)opStr;
 }
 
-BitSet BitSet::operator^(BitSet bits)
+BitSet BitSet::operator^(BitSet &bits)
 {
     BitSet res;
+    
+    unsigned char* opStr = this->xorOp(&bits);
+    int len = strlen((const char*)opStr);
+
+    res.setBits(opStr);
+    res.setBytes(len);
+    res.setSize(len*BYTE_SIZE);
     
     
     return res;
 }
 
-BitSet* BitSet::notOp()
+unsigned char* BitSet::notOp()
 {
+    unsigned char* opStr;
+    opStr = (unsigned char*) malloc(this->m_bytes+1);
+    memset(opStr,0,this->m_bytes+1);
+
     //8字节
     for(int count=0; count<this->m_bytes/sizeof(unsigned long); count++)
     {
-        ((unsigned long*)this->m_bits)[count] = ~((unsigned long*)this->m_bits)[count] ;
+        ((unsigned long*)opStr)[count] = ~((unsigned long*)this->m_bits)[count] ;
     }
 
     //剩余的1字节处理
     for(int count=this->m_bytes - this->m_bytes%sizeof(unsigned long); count<this->m_bytes; count++)
     {
-        ((unsigned char*)this->m_bits)[count] = ~((unsigned char*)this->m_bits)[count] ;
+        ((unsigned char*)opStr)[count] = ~((unsigned char*)this->m_bits)[count] ;
     }
 
-    return this;
+    opStr[this->m_bytes] = '\0';
+
+    return (unsigned char*)opStr;
 }
 
 BitSet BitSet::operator~()
 {
     BitSet res;
-    
+
+    unsigned char* opStr = this->notOp();
+    int len = strlen((const char*)opStr);
+
+    res.setBits(opStr);
+    res.setBytes(len);
+    res.setSize(len*BYTE_SIZE);
     
     return res;
 }
@@ -258,7 +284,7 @@ bool BitSet::fill()
 
 void BitSet::print() const
 {
-    std::cout<<"this "<<this->m_bytes<<" bitset chars to unsigned int of byte_size:"<<std::endl;
+    std::cout<<"this "<<this->m_bytes<<" bitset-chars to unsigned int of byte_size:"<<std::endl;
     for(unsigned int i=0; i<this->m_bytes; i++) {
         std::cout<<(unsigned int)this->m_bits[i];
     }

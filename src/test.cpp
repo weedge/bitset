@@ -93,7 +93,9 @@ void test2()
     }
     */
 
+    /*
     {
+        std::cout<<"=====分割线 & ======="<<std::endl;
         BitSet b3("101010101001");
         test_print(&b3);
         BitSet b4("110101001001");
@@ -101,7 +103,8 @@ void test2()
         BitSet b5("110101000001");
         test_print(&b5);
 
-        BitSet andOpBitSet = b3 & b4;
+        //std::cout<<"and op"<<std::endl;
+        BitSet andOpBitSet = b3 & b4 & b5;
         test_print(&andOpBitSet);
 
         andOpBitSet.set(3);
@@ -109,34 +112,102 @@ void test2()
     }
 
     {
-        std::cout<<"-------"<<std::endl;
-        BitSet b3("10101010001");
+        std::cout<<"---分割线----"<<std::endl;
+        BitSet b3("10101010001110");
         test_print(&b3);
-        BitSet b4("110101000001");
+        BitSet b4("110101000011111100001");
         test_print(&b4);
         BitSet b5("11010100001");
         test_print(&b5);
 
-        BitSet andOpBitSet = b3 & b4;
-        test_print(&andOpBitSet);
-
-        andOpBitSet.set(3);
-        test_print(&andOpBitSet);
-    }
-    /*
-    {
-        BitSet b3("101010101000");
-        test_print(&b3);
-        BitSet b4("110101001001");
-        test_print(&b4);
-
-        BitSet andOpBitSet = b3 & b4;
+        BitSet andOpBitSet = b3 & b4 & b5;
         test_print(&andOpBitSet);
 
         andOpBitSet.set(3);
         test_print(&andOpBitSet);
     }
     */
+
+    /*
+    {
+        std::cout<<"=====分割线 | ======="<<std::endl;
+        BitSet b3("101010101000");
+        BitSet b4("110101001001");
+        BitSet b5("101010101010");
+        test_print(&b3);
+        test_print(&b4);
+        test_print(&b5);
+
+        BitSet opBitSet = b3 | b4 | b5;
+        test_print(&opBitSet);
+
+        opBitSet.unSet(3);
+        test_print(&opBitSet);
+    }
+    */
+
+    /*
+    {
+        std::cout<<"---分割线----"<<std::endl;
+        BitSet b3("101010101000111100111");
+        BitSet b4("1101010010011010");
+        BitSet b5("101010101010");
+        test_print(&b3);
+        test_print(&b4);
+        test_print(&b5);
+
+        BitSet opBitSet = b3 | b4 | b5;
+        test_print(&opBitSet);
+
+        opBitSet.unSet(3);
+        test_print(&opBitSet);
+    }
+    */
+    /*
+    {
+        std::cout<<"=====分割线 ^ ======="<<std::endl;
+        BitSet b3("101010101000");
+        BitSet b4("110101001001");
+        BitSet b5("101010101010");
+        test_print(&b3);
+        test_print(&b4);
+        test_print(&b5);
+
+        BitSet opBitSet = b3 ^ b4 ^ b5;
+        test_print(&opBitSet);
+
+        opBitSet.unSet(3);
+        test_print(&opBitSet);
+    }
+
+    {
+        std::cout<<"---分割线----"<<std::endl;
+        BitSet b3("101010101000111100111");
+        BitSet b4("1101010010011010");
+        BitSet b5("10101010101011111111000000011000");
+        test_print(&b3);
+        test_print(&b4);
+        test_print(&b5);
+
+        BitSet opBitSet = b3 ^ b4 ^ b5;
+        test_print(&opBitSet);
+
+        opBitSet.unSet(3);
+        test_print(&opBitSet);
+    }
+    */
+
+    {
+        std::cout<<"=====分割线 ~ ======="<<std::endl;
+        BitSet b3("101010101000");
+        test_print(&b3);
+
+        BitSet opBitSet = ~b3;
+        test_print(&opBitSet);
+
+        opBitSet.unSet(3);
+        test_print(&opBitSet);
+    }
 
 }
 

@@ -21,21 +21,27 @@ class BitSet
         unsigned char* andOp(BitSet* bits);//与操作
         unsigned char* orOp(BitSet* bits);//或操作
         unsigned char* xorOp(BitSet* bits);//异或操作
-        BitSet* notOp();//非操作
+        unsigned char* notOp();//非操作
 
     public:
-        BitSet(){m_bits=NULL;m_size=m_bytes=0;}
+        BitSet()
+        {
+            m_bits = (unsigned char*) malloc(1);
+            m_bits[0]='\0';
+            m_size=m_bytes=0;
+        }
+
         BitSet(unsigned int size);
         BitSet(const char* bits);//string to init bitset
 
         ~BitSet()
         { 
             if(m_bits!=NULL){
-                std::cout<<"delete~"<<std::endl;
+                //std::cout<<"delete~"<<std::endl;
                 free(m_bits);
                 m_bits=NULL;
+                m_size=m_bytes=0;
             }
-            m_size=m_bytes=0;
         }
 
         unsigned char* getBits(){return m_bits;}
@@ -45,11 +51,13 @@ class BitSet
         void setBits(unsigned char* bits)
         {
             if(m_bits!=NULL){
-                std::cout<<"free"<<std::endl;
+                //std::cout<<"free"<<std::endl;
                 free(m_bits);
                 m_bits=NULL;
             }
+
             m_bits = bits;
+
             /*
             int len = strlen((const char*)bits);
             m_bits = (unsigned char*) malloc(len+1);
@@ -57,7 +65,6 @@ class BitSet
             m_bits[len] = '\0';
             */
         }
-
 
         void setBytes(unsigned int bytes){m_bytes=bytes;}
         void setSize(unsigned int size){m_size=size;}
@@ -72,9 +79,9 @@ class BitSet
     
         //操作符重载实现
         //http://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B
-        BitSet operator&(BitSet bits);
-        BitSet operator|(BitSet bits);
-        BitSet operator^(BitSet bits);
+        BitSet operator&(BitSet &bits);
+        BitSet operator|(BitSet &bits);
+        BitSet operator^(BitSet &bits);
         BitSet operator~();
 
         //for test

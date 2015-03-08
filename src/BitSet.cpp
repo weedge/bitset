@@ -282,6 +282,25 @@ bool BitSet::fill()
     return true;
 }
 
+bool BitSet::isEmpty()
+{
+    //8字节
+    for(int count=0; count<this->m_bytes/sizeof(unsigned long); count++) {
+        if(((unsigned long*)this->m_bits)[count]){
+			return false;
+		}
+    }
+
+    //剩余的1字节处理
+    for(int count=this->m_bytes - this->m_bytes%sizeof(unsigned long); count<this->m_bytes; count++) {
+        if(((unsigned char*)this->m_bits)[count]){
+			return false;
+		}
+    }
+
+	return true;
+}
+
 void BitSet::print() const
 {
     std::cout<<"this "<<this->m_bytes<<" bitset-chars to unsigned int of byte_size:"<<std::endl;

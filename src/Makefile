@@ -12,4 +12,5 @@ BitSet.o: BitSet.cpp BitSet.hpp
 
 clean :
 	rm -f test test.o BitSet.o BitSet.lo
+	rm -rf .libs
 	

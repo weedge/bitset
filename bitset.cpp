@@ -12,7 +12,7 @@
   | obtain it through the world-wide-web, please send a note to          |
   | license@php.net so we can mail you a copy immediately.               |
   +----------------------------------------------------------------------+
-  | Author:                                                              |
+  | Author: weedge <weege007@gmail.com>                                  |
   +----------------------------------------------------------------------+
 */
 
@@ -252,6 +252,9 @@ PHP_FUNCTION(bit_isset)
 
 }
 /* }}} */
+
+
+
 
 /*
  * Local variables:

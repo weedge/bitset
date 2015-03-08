@@ -72,6 +72,9 @@ class BitSet
         bool reset();//清空
         bool fill();//全部设置为1
 
+		bool isEmpty();//是否为空
+
+
         //动态扩展
         bool set(unsigned int pos);//设置某位为1
         bool unSet(unsigned int pos);//设置某位为0

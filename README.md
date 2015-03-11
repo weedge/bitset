@@ -2,6 +2,7 @@ BitSet
 ===================
 
 [![Build Status](https://travis-ci.org/weedge/bitset.svg)](https://travis-ci.org/weedge/bitset)
+[![Code Climate](https://codeclimate.com/github/weedge/bitset/badges/gpa.svg)](https://codeclimate.com/github/weedge/bitset)
 
 ####介绍
 将BitSet封装成类,用于php扩展调用
